@@ -8,5 +8,11 @@ module Rygsaek
         include Rygsaek::Helper
       end
     end
+    initializer 'rygsaek.active_record' do
+
+      # Extend ActiveRecord's functionality
+      ActiveRecord::Base.send :extend, Rygsaek::Enclosure
+      
+    end
   end
 end

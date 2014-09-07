@@ -46,10 +46,10 @@ you are free to name them otherwise!
 
 Go a head and use the generator for this:
 
-    $ rails generate rygsaek:setup
+    $ rails generate rygsaek:setup --skip_views --skip_controller --skip_migration --skip_initializer
 
-Rygsaek will add a migration to your project and introduce an initializer in the config/initializers
-folder
+Rygsaek will create view files and a controller for attachments, add a migration to your project, and introduce an initializer in the config/initializers
+folder but like you see above, you get to skip the parts you'd prefer to do yourself.
 
 ### Model configuration
 
