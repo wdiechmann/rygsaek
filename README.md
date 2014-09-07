@@ -32,7 +32,7 @@ Or install it yourself as:
 
 ## Dependencies
 
-Rygsaek relies heavily on (CarrierWave)[https://github.com/carrierwaveuploader/carrierwave] which does 
+Rygsaek relies heavily on [CarrierWave](https://github.com/carrierwaveuploader/carrierwave) which does 
 all the heavy-lifting. 
 
 
@@ -53,7 +53,7 @@ folder
 
 ### Model configuration
 
-Models that you would like Rygsaek to manage enclosures for will have to be told so. You do that 
+Models will have to be told that you would like Rygsaek to manage enclosures for it. You do that 
 with a simple statement in the model class.
 
 ```ruby
