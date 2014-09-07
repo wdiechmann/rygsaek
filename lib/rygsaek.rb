@@ -2,6 +2,8 @@ require "rygsaek/version"
 require "rygsaek/configuration"
 require "rygsaek/showing"
 
+require "rygsaek/railtie" if defined?(Rails)
+
 # be prepared to rescue this
 # pry will only be available to development
 begin
