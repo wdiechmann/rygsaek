@@ -7,7 +7,7 @@ module Rygsaek
       @config = config
     end
     
-    def view_photo
+    def view_a_photo
       ""
     end
   end

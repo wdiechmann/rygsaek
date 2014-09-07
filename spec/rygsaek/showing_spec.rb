@@ -10,12 +10,14 @@ module Rygsaek
       let(:storage_a) { Rygsaek::Showing.new(config1) }
       let(:storage_b) { Rygsaek::Showing.new(config2) }
 
-      expect(storage_a.config.storage).to eq(:file)
-      expect(storage_b.config.storage).to eq(:s3)
+      it "keeps configurations local if necessary" do
+        expect(storage_a.config.storage).to eq(:file)
+        expect(storage_b.config.storage).to eq(:s3)
+      end        
     end
     
     describe "#view_photo" do
-      let(:view_photo) { Rygsaek::Showing.new.view_photo }
+      let(:view_photo) { Rygsaek::Showing.new.view_a_photo }
       
       it "returns an empty string when no attachments exist" do
         expect(view_photo).to eq("")
