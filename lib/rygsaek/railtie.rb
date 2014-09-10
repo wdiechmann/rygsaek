@@ -1,5 +1,6 @@
 require 'rails'
 require 'rygsaek/helper'
+require 'rygsaek/enclosure'
 
 module Rygsaek
   class Railtie < Rails::Railtie
@@ -8,11 +9,11 @@ module Rygsaek
         include Rygsaek::Helper
       end
     end
+    
     initializer 'rygsaek.active_record' do
-
-      # Extend ActiveRecord's functionality
-      ActiveRecord::Base.send :extend, Rygsaek::Enclosure
-      
+      ActiveSupport.on_load(:active_record) do
+        include Rygsaek::Enclosure
+      end
     end
   end
 end

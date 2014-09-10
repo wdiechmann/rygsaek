@@ -1,6 +1,7 @@
 require "rygsaek/version"
 require "rygsaek/configuration"
 require "rygsaek/showing"
+require "rygsaek/enclosure"
 
 require "rygsaek/railtie" if defined?(Rails)
 
@@ -29,4 +30,10 @@ module Rygsaek
   def self.configure
     yield(configuration)
   end
+
+  
+end
+
+ActiveSupport.on_load(:active_record) do
+  include Rygsaek::Enclosure
 end
