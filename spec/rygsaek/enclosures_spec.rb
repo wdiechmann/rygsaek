@@ -26,6 +26,7 @@ module Rygsaek
     describe "self.manage_enclosures" do
       before :each do
         class ::Post < ActiveRecord::Base
+          binding.pry
           has_enclosures
         end
       end

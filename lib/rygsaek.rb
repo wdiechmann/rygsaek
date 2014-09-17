@@ -1,9 +1,3 @@
-require "rygsaek/version"
-require "rygsaek/configuration"
-require "rygsaek/showing"
-require "rygsaek/enclosure"
-
-require "rygsaek/railtie" if defined?(Rails)
 
 # be prepared to rescue this
 # pry will only be available to development
@@ -13,6 +7,13 @@ begin
   # binding.pry
 rescue LoadError 
 end
+
+require "rygsaek/version"
+require "rygsaek/configuration"
+require "rygsaek/showing"
+require "rygsaek/enclosure"
+
+require "rygsaek/railtie" #if defined?(Rails)
 
 module Rygsaek
   class << self
@@ -32,8 +33,4 @@ module Rygsaek
   end
 
   
-end
-
-ActiveSupport.on_load(:active_record) do
-  include Rygsaek::Enclosure
 end
