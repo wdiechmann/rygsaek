@@ -9,7 +9,7 @@ module Rygsaek
         include Rygsaek::Helper
       end
     end
-    
+        
     initializer 'rygsaek.active_record' do
       ActiveSupport.on_load(:active_record) do
         include Rygsaek::Enclosure
