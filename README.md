@@ -1,20 +1,61 @@
-# Rygsaek
+[![Build Status](https://api.travis-ci.org/wdiechmann/rygsaek.png?branch=master)](http://travis-ci.org/wdiechmann/rygsaek)
+[![Code Climate](https://codeclimate.com/github/wdiechmann/rygsaek.png)](https://codeclimate.com/github/wdiechmann/rygsaek)
 
-Give your models a carry-on to hold all the attachments users may enclose.
+## Rygsaek
 
-Rygsaek manages the attachments to models, like images, documents and other files
-that should go with the model. It does so by inserting references to enclosures
-in a table labeled **attachments** and establishes the link between references in
-this table with you model via another table labeled **attachables**.
+Give your models a carry-on to hold all the enclosures users may upload.
+
+**Rygsaek** manages the enclosures to models, like images, documents and other files
+that should go with the model. 
 
 Say you have a Product model and you would like to attach a few photos of the product,
-one or two PDF spec sheets and a bill of materials spreadsheet - **rygsaek** is your friend!
+one or two PDF spec sheets and a bill of materials spreadsheet - **Rygsaek** is your friend!
 
-When you get another variant of that Product and want to 'share' the BOM - rygsaek has your back
-and allows you to attach it to that other product without having to copy it (so when the bill
-of materials change - both products are updated).
+Now, let's just imagine that you get another variant of that Product and 
+want to 'share' the BOM - **Rygsaek** has your back and allows you to attach it to that other 
+product without having to copy it (so when the bill of materials change - both products are updated).
 
-## Installation
+Easy was it not?
+
+That first product - remember that one? Well, turns out it has reached it's EOL (End Of Life) so
+you go delete it. Deleting it will break the connection to the shared BOM spreadsheet right? No!
+
+The BOM is safe with **Rygsaek** and only the link between the now defunct product and the BOM is gone.
+
+###How does that work?
+
+There are a few use cases described like this:
+
+UC1: You're sitting on a pile of files that will need to be stored (dropbox like)
+You upload the files - a preset number of GB at a time - without attention to any references or details.
+
+UC2: You got an email with an attached .docx file that should be referenced by the sender
+You lookup the sender (in your app) and drop the file on her
+
+UC3: You've shot a few photos that will need captions, location, other details
+You upload the photos to an app that will allow details be added to every file/upload
+
+UC4: You uploaded a photo and referenced it on a product - now you've got a new product that need that pic too
+You lookup the 'old' product, make a note of the photo reference, find the new product and add the reference - OR - 
+you find the new product and searches, and selects, the photo with the gallery tool.
+
+Initially you will define - at least - one **rygsaek**, telling it what kind of storage to use (memory, disk, cloud of sorts).
+This implies, of cause, that you may operate any number of concurrent rygsaeks all within the same app. One for important documents, another for 
+non-important photos, yet another for employee screenings, etc. Each rygsaek may be organized slightly different without
+interfering with the other rygsaeks. Some files you store in the cloud, other goes on disk and yet some goes into the database!
+
+Then, when you upload your files they are saved/transferred to the rygsaek of your choice and the file reference 
+is saved to a tuple/record in a table/dataset labeled **rygsaek\_items** which holds a reference to the rygsaek in question, 
+a file reference, and a details field. 
+
+At upload time you get to make a choice what details to add to the record. Details are serialized and stored in the details 
+field. If there is no association/reference to any other instance, you're done. Otherwise another tuple is created in a 
+dataset labeled **rygsaek\_item\_links** which holds a reference to the rygsaek, to the rygsaek\_item, and to what ever object
+you wanted the 'attachment' to reference/attach to.
+
+And that is really all there is to it!
+
+###Installation
 
 Add this line to your application's Gemfile:
 
@@ -30,35 +71,48 @@ Or install it yourself as:
 
     $ gem install rygsaek
 
-## Dependencies
+###Dependencies
 
-Rygsaek relies heavily on [CarrierWave](https://github.com/carrierwaveuploader/carrierwave) which does 
+**Rygsaek** relies heavily on [CarrierWave](https://github.com/carrierwaveuploader/carrierwave) which does 
 all the heavy-lifting. 
 
-
-## Usage
+###Usage
 
 ### Initial setup
 
-You most probably will start by setting up Rygsaek. In order for Rygsaek to function it has two tables
-that it will create in your database - by default they are labeled attachments and attachables, but 
+You most probably will start by setting up **Rygsaek**. In order for **Rygsaek** to function it has three tables
+that it will create in your database - by default they are labeled rygsaek, rygsaek\_items, and rygsaek\_item\_links, but 
 you are free to name them otherwise!
 
 Go a head and use the generator for this:
 
-    $ rails generate rygsaek:setup --skip_views --skip_controller --skip_migration --skip_initializer
+    $ rails generate rygsaek:setup
+		
+		 --skip_helpers --skip_views --skip_controller --skip_migration --skip_initializer
 
-Rygsaek will create view files and a controller for attachments, add a migration to your project, and introduce an initializer in the config/initializers
-folder but like you see above, you get to skip the parts you'd prefer to do yourself.
+**Rygsaek** will create view files, view\_helpers, and controllers for rygsaeks, and rygsaek\_items, and a partial for 
+rygsaek\_item\_links, add migrations to your project, and introduce an initializer in the config/initializers
+folder but you get to decide what parts you'd like to erect yourself,
+
+    $ rails generate rygsaek:setup
+		
+			--prefix=rygsaek (rygsaek, rygsaek\_items, and rygsaek\_item\_links)
+			--skip_views 
+			--skip_helpers 
+			--skip_controllers 
+			--skip_migrations 
+			--skip_initializer
 
 ### Model configuration
 
-Models will have to be told that you would like Rygsaek to manage enclosures for it. You do that 
+Once you've setup **Rygsaek** it's time to start using it! 
+
+Models will have to be told that you would like **Rygsaek** to manage enclosures for it. You do that 
 with a simple statement in the model class.
 
 ```ruby
 class SomeModel < ActiveRecord::Base
-  rygsaek_enclosures
+  carries\_rygsaek
   ...
 end
 ```
@@ -69,47 +123,80 @@ in the config/initializers/rygsaek.rb) in the initializer or as options on the m
 
 ```ruby
 class SomeModel < ActiveRecord::Base
-  rygsaek_enclosures storage: 'file', 
-  					 sizes: { jpg: ['32x32','128x128'], png: '92x92'},
-					 types: 'gif,jpg,png,pdf,xls',
-					 filsize: { pdf: 1024, gif: 12, png: 256 }
+  carries\_rygsaek	storage: 'file', 
+  									sizes: { jpg: ['32x32','128x128'], png: '92x92'},
+										types: 'gif,jpg,png,pdf,xls',
+										filsize: { pdf: 1024, gif: 12, png: 256 }
   ...
 end
 ```
+
+With the model configurations out of the way you're well on your way to start attaching uploads to your
+models.
 
 ### View configuration
 
 Enclosures are usually added to models at some later time - but not necessarily. Adding new 
 employees for example might include grabbing a selfie to go with the profile as would persisting
-that new contact you meet at random whilst hiking the Himalayan Foot Hills (but Rygsaek does not
-yet offer any localStorage solution mind you).
+that new contact you meet at random whilst hiking the Himalayan Foot Hills (but **Rygsaek** does not
+yet offer any localStorage solution mind you, so without the Nepalese Telecom to provide some decent
+bandwidth, carrying all your electronic devices may prove futile!).
 
-So - enclosures are divided into 2 basic categories: one-off and galleries
+####Showing attachments
+
+So - enclosures are divided into 2 basic categories: one-off and galleries:
 
 The one-off kind is typically the employee pic or the product high-res which you present and collect
 with this helper:
 
-    <%= view_photo(@employee, :selfie, :thumb) %>
+	<%= view\_photo(@employee, :selfie, :thumb) %>
+		
+The show action mentioned on the previous line will build this HTML
+
+	\<div class="rygsaek-photo" >
+		\<img src="" />
+		\<div class="rygsaek-control-panel">
+			\<div class="" ><i class="icon-pencil">\<\/div>
+			\<div class="" ><i class="icon-floppy">\<\/div>
+			\<div class="" ><i class="icon-trash">\<\/div>
+			\<div class="" ><i class="icon-folder">\<\/div>
+		\<\/div>
+	\<\/div>
 
 The gallery type works more or less the same way:
 
-    <%= view_gallery(@product, :specs, :slideshow) %>
+	<%= view\_gallery(@product, :specs, :slideshow) %>
 
-Both helpers will take form objects instead and thus basically allow you to remember just these
-two commands!
+	FIXME 2014-12-04 whd what html to write
+
+####Editing and adding forms that include enclosures
+
+Both helpers (view\_photo and view\_gallery) will take form objects instead and 
+thus basically allow you to remember just these two commands!
 
 ```ruby
 
 - form_for @employee do |f|
-    = view_photo f, :selfie, :thumb, :provide_url_input_too
-	= f.input :employee_name
-	...
+		= f.input :employee_name
+    = view\_photo f, :selfie, :thumb, :provide\_url\_input\_too
+		= view\_gallery f, :specs, :thumb, :url\_to\_load\_enclosures\_from
+		...
 
 ```
 
+###API
+
+Client-side retrieval of persisted data and client-side frameworks like AngularJS will rejoice in **Rygsaek** 
+and it's API as it adds RESTful  URL's for retrieving and storing attachments:
+
+	/model/:id/enclosures.json
+	/model/:id/:field\_name/:size_reference		/employees/3/selfie/thumb
+																						/products/bolster-gun-with-grip/specs/slideshow
+
+	FIXME 2014-11-29 whd how to post 3 photos with a new product ?
 
 
-## Contributing
+###Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/rygsaek/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)

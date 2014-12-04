@@ -8,7 +8,7 @@ module Rygsaek
     before :each do
       ActiveRecord::Base.establish_connection( adapter: 'sqlite3', database: ':memory:')
       ActiveRecord::Schema.define do
-        create_table :posts, froce: true do |t|
+        create_table :posts, force: true do |t|
           t.string :title, default: 'post'
         end
         create_table :attachables, force: true do |t|
@@ -26,7 +26,7 @@ module Rygsaek
     describe "self.manage_enclosures" do
       before :each do
         class ::Post < ActiveRecord::Base
-          has_enclosures
+          has_rygsaek_enclosures
         end
       end
       
