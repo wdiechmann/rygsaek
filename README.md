@@ -88,15 +88,13 @@ Go a head and use the generator for this:
 
     $ rails generate rygsaek:setup
 		
-		 --skip_helpers --skip_views --skip_controller --skip_migration --skip_initializer
-
 **Rygsaek** will create view files, view\_helpers, and controllers for rygsaeks, and rygsaek\_items, and a partial for 
 rygsaek\_item\_links, add migrations to your project, and introduce an initializer in the config/initializers
 folder but you get to decide what parts you'd like to erect yourself,
 
     $ rails generate rygsaek:setup
 		
-			--prefix=rygsaek (rygsaek, rygsaek\_items, and rygsaek\_item\_links)
+			--prefix=rygsaek (rygsaek, rygsaek_items, and rygsaek_item_links)
 			--skip_views 
 			--skip_helpers 
 			--skip_controllers 
@@ -112,7 +110,7 @@ with a simple statement in the model class.
 
 ```ruby
 class SomeModel < ActiveRecord::Base
-  carries\_rygsaek
+  carries_rygsaek
   ...
 end
 ```
@@ -123,10 +121,10 @@ in the config/initializers/rygsaek.rb) in the initializer or as options on the m
 
 ```ruby
 class SomeModel < ActiveRecord::Base
-  carries\_rygsaek	storage: 'file', 
-  									sizes: { jpg: ['32x32','128x128'], png: '92x92'},
-										types: 'gif,jpg,png,pdf,xls',
-										filsize: { pdf: 1024, gif: 12, png: 256 }
+  carries_rygsaek	storage: 'file', 
+		sizes: { jpg: ['32x32','128x128'], png: '92x92'},
+		types: 'gif,jpg,png,pdf,xls',
+		filsize: { pdf: 1024, gif: 12, png: 256 }
   ...
 end
 ```
@@ -149,23 +147,23 @@ So - enclosures are divided into 2 basic categories: one-off and galleries:
 The one-off kind is typically the employee pic or the product high-res which you present and collect
 with this helper:
 
-	<%= view\_photo(@employee, :selfie, :thumb) %>
+	<%= view_photo(@employee, :selfie, :thumb) %>
 		
 The show action mentioned on the previous line will build this HTML
 
-	\<div class="rygsaek-photo" >
-		\<img src="" />
-		\<div class="rygsaek-control-panel">
-			\<div class="" ><i class="icon-pencil">\<\/div>
-			\<div class="" ><i class="icon-floppy">\<\/div>
-			\<div class="" ><i class="icon-trash">\<\/div>
-			\<div class="" ><i class="icon-folder">\<\/div>
-		\<\/div>
-	\<\/div>
+	<div class="rygsaek-photo" >
+		<img src="" />
+		<div class="rygsaek-control-panel">
+			<div class="" ><i class="icon-pencil"></div>
+			<div class="" ><i class="icon-floppy"></div>
+			<div class="" ><i class="icon-trash"></div>
+			<div class="" ><i class="icon-folder"></div>
+		<\/div>
+	<\/div>
 
 The gallery type works more or less the same way:
 
-	<%= view\_gallery(@product, :specs, :slideshow) %>
+	<%= view_gallery(@product, :specs, :slideshow) %>
 
 	FIXME 2014-12-04 whd what html to write
 
@@ -178,8 +176,8 @@ thus basically allow you to remember just these two commands!
 
 - form_for @employee do |f|
 		= f.input :employee_name
-    = view\_photo f, :selfie, :thumb, :provide\_url\_input\_too
-		= view\_gallery f, :specs, :thumb, :url\_to\_load\_enclosures\_from
+    = view_photo f, :selfie, :thumb, :provide_url_input_too
+		= view_gallery f, :specs, :thumb, :url_to_load_enclosures_from
 		...
 
 ```
@@ -190,8 +188,8 @@ Client-side retrieval of persisted data and client-side frameworks like AngularJ
 and it's API as it adds RESTful  URL's for retrieving and storing attachments:
 
 	/model/:id/enclosures.json
-	/model/:id/:field\_name/:size_reference		/employees/3/selfie/thumb
-																						/products/bolster-gun-with-grip/specs/slideshow
+	/model/:id/:field_name/:size_reference		/employees/3/selfie/thumb
+			/products/bolster-gun-with-grip/specs/slideshow
 
 	FIXME 2014-11-29 whd how to post 3 photos with a new product ?
 

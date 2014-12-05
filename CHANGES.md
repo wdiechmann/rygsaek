@@ -6,6 +6,7 @@ if any, a reference to any https://github.com/wdiechmann/rygsaek/issues promptin
 
 #### Not released
 
+* currently the roadmap is rather in flux, so not much to chalk up as 'not released'
 
 
 #### Released
@@ -17,6 +18,13 @@ if any, a reference to any https://github.com/wdiechmann/rygsaek/issues promptin
 * add a CONTRIBUTING.md shamelessly copy/pasted from [Devise]((https://groups.google.com/group/plataformatec-devise))
 * changing the rygsaek.gemspec [ephillips][]
 * add Travis CI  [wdiechmann][]
+* remove RSpec and add MiniTest (again - copy cat'ing Devise; sorry José Valím) [wdiechmann][]
+* setting up ORMs (ActiveRecord and MongoDB) [wdiechmann][]
+* preparing for localisation [wdiechmann][]
+* added install generator [ephillips][]
+* starting to add views generator [ephillips][]
+* added routes tests [wdiechmann][]
+* added a test rails app [wdiechmann][]
 
 ----
 ##### 0.0.1

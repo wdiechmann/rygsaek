@@ -1,14 +1,14 @@
 language: ruby
-#script: "bundle exec rake test"
-#install: script/cached-bundle install --deployment --path vendor/bundle
+script: "bundle exec rake test"
+install: script/cached-bundle install --deployment --path vendor/bundle
 rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.2
-#env:
-#  matrix:
-#    - DEVISE_ORM=mongoid
-#    - DEVISE_ORM=active_record
+env:
+  matrix:
+    - DEVISE_ORM=mongoid
+    - DEVISE_ORM=active_record
 #  global:
 #    # AMAZON_S3_BUCKET
 #    - secure: "qkeYGn2mpgsgU5tKS9GWvFp/utUF/9O8++Shch24DMnq8OB01TrV5QQ2Elj7sSjMWqw2Pbe56nUCA9eOWXhPglGyIq2AI9E0umsEGZxdRlqqobpiMWs5wl8KZ0cFD1rZm6CwfL8atmcNfTt5TnvsaQ2l/k3TerOT2e66R/Mibk8="
