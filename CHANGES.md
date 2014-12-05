@@ -18,13 +18,17 @@ if any, a reference to any https://github.com/wdiechmann/rygsaek/issues promptin
 * add a CONTRIBUTING.md shamelessly copy/pasted from [Devise]((https://groups.google.com/group/plataformatec-devise))
 * changing the rygsaek.gemspec [ephillips][]
 * add Travis CI  [wdiechmann][]
-* remove RSpec and add MiniTest (again - copy cat'ing Devise; sorry José Valím) [wdiechmann][]
+* remove RSpec and add MiniTest (again - copy cat'ing Devise; sorry José Valim) [wdiechmann][]
 * setting up ORMs (ActiveRecord and MongoDB) [wdiechmann][]
 * preparing for localisation [wdiechmann][]
 * added install generator [ephillips][]
 * starting to add views generator [ephillips][]
 * added routes tests [wdiechmann][]
 * added a test rails app [wdiechmann][]
+* dumping most of the 'copy catting from Devise' [ephillips][]
+* rails new rails_app --skip-gemfile --skip-bundle --skip-git --skip-keeps --skip-spring --skip-test-unit [ephillips][]
+* working my way through a basic rake test - including necessary folders/files like Devise all over [ephillips][]
+* this is not cool - but very instructional  [ephillips][]
 
 ----
 ##### 0.0.1
