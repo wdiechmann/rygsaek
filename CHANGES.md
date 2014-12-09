@@ -11,6 +11,12 @@ if any, a reference to any https://github.com/wdiechmann/rygsaek/issues promptin
 
 #### Released
 
+
+----
+##### 0.0.3
+
+* clarifying the install and setup process [wdiechmann][]
+
 ----
 ##### 0.0.2
 
@@ -29,6 +35,7 @@ if any, a reference to any https://github.com/wdiechmann/rygsaek/issues promptin
 * rails new rails_app --skip-gemfile --skip-bundle --skip-git --skip-keeps --skip-spring --skip-test-unit [ephillips][]
 * working my way through a basic rake test - including necessary folders/files like Devise all over [ephillips][]
 * this is not cool - but very instructional  [ephillips][]
+* working on the install_generator_test  [ephillips][]
 
 ----
 ##### 0.0.1

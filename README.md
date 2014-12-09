@@ -82,15 +82,28 @@ all the heavy-lifting.
 
 You most probably will start by setting up **Rygsaek**. In order for **Rygsaek** to function it has three tables
 that it will create in your database - by default they are labeled rygsaek, rygsaek\_items, and rygsaek\_item\_links, but 
-you are free to name them otherwise!
+you are free to set your own prefix name them otherwise!
 
-Go a head and use the generator for this:
+Getting a firm footing - start by using the generator for this:
 
-    $ rails generate rygsaek:setup
+    $ rails generate rygsaek:install
 		
+**Rygsaek** will introduce a localization in the config/locale and an initializer in the config/initializers
+folder and after running the install generator, you really should browse the config/initializers/rygsaek.rb 
+briefly. It contains Rygsaek defaults which you probably would like to adjust to your environment.
+
+Done that? Then go ahead and generate 'rygsaek' with your first model (that requires 'a rygsaek') as scope
+
+		$ rails generate rygsaek MODEL
+
 **Rygsaek** will create view files, view\_helpers, and controllers for rygsaeks, and rygsaek\_items, and a partial for 
-rygsaek\_item\_links, add migrations to your project, and introduce an initializer in the config/initializers
-folder but you get to decide what parts you'd like to erect yourself,
+rygsaek\_item\_links, add migrations to your project, 
+
+
+
+
+
+but you get to decide what parts you'd like to erect yourself,
 
     $ rails generate rygsaek:setup
 		
@@ -100,6 +113,14 @@ folder but you get to decide what parts you'd like to erect yourself,
 			--skip_controllers 
 			--skip_migrations 
 			--skip_initializer
+			
+If you skip, say the views, you will be able to customize the views later on by running this command
+
+		$ rails g rygsaek:views
+		
+which will copy all **Rygsaek** views to views/rygsaek/ folders. Likewise for helpers, controllers, and migrations
+
+
 
 ### Model configuration
 
