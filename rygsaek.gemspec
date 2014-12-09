@@ -14,7 +14,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://rygsaek.github.io"
   spec.licenses      = ["MIT"]
 
-  spec.files         = `git ls-files -z`.split("\n")
+  spec.files         = `git ls-files -z`.split("\x0")
+  
   # spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = `git ls-files -- test/*`.split("\n")
   spec.require_paths = ["lib","lib/rygsaek"]
@@ -25,4 +26,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency("thread_safe", "~> 0.1")
   spec.add_dependency("railties", ">= 3.2.6", "< 5")
 end
+
+
 
