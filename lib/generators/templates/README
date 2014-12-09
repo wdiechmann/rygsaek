@@ -1,0 +1,9 @@
+===============================================================================
+
+Some setup you must do manually if you haven't yet:
+
+  1. You can copy Rygsaek views (for customization) to your app by running:
+
+       rails g rygsaek:views
+
+===============================================================================

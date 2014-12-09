@@ -22,6 +22,6 @@ $:.unshift File.expand_path('../support', __FILE__)
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 # For generators
-# require "rails/generators/test_case"
-# require "generators/devise/install_generator"
+require "rails/generators/test_case"
+require "generators/rygsaek/install_generator"
 # require "generators/devise/views_generator"
