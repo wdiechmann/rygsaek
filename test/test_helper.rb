@@ -1,3 +1,6 @@
+require 'coveralls'
+Coveralls.wear!
+
 ENV["RAILS_ENV"] = "test"
 RYGSAEK_ORM = (ENV["RYGSAEK_ORM"] || :active_record).to_sym
 

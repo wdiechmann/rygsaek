@@ -7,6 +7,7 @@ gem "rdoc"
 gem "bundler", "~> 1.7"
 gem "rake", "~> 10.0"
 gem 'pry'
+gem 'coveralls', require: false
 
 group :test do
   gem "webrat", "~> 0.7.3", require: false
