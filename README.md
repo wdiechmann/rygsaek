@@ -44,9 +44,32 @@ This implies, of cause, that you may operate any number of concurrent rygsaeks a
 non-important photos, yet another for employee screenings, etc. Each rygsaek may be organized slightly different without
 interfering with the other rygsaeks. Some files you store in the cloud, other goes on disk and yet some goes into the database!
 
-Then, when you upload your files they are saved/transferred to the rygsaek of your choice and the file reference 
-is saved to a tuple/record in a table/dataset labeled **rygsaek\_items** which holds a reference to the rygsaek in question, 
-a file reference, and a details field. 
+You add a ```carries_rygsaek``` on each models/MODEL.rb that will reference enclosures of some kind (documents, pics, 
+what-ever) and possibly you add a number of options - like which rygsaek to use, what file types and -sizes to accept, 
+any kind of post processing, etc. Or you go with the default, which is:
+
+		carries_rygsaek :enclosures, options: {rygsaek: 'file on disk', file_type: [:jpg,:png,:gif], file_size: 512}
+
+The above statement could be written like
+
+		carries_rygsaek
+
+Notice too, how the **field name** symbol is plural - identifying that you expect more photos to be uploadable/viewable - 
+which will be a hint to the view\_helper to accept/display more photos 'out of the box'.
+
+Add a reference to the enclosure on the views/MODELs/\_form.html.haml - using either the view_photo or view\_gallery helper - both 
+accepts a form object which makes it an easy add :)
+
+If you - like in the example above - labeled the field reference ```:enclosures``` you'd allow more documents to be uploaded
+even if you add the ```view_photo``` helper, but when display enclosures, the view\_photo helper will only display the
+first enclosure found (the one with the smallest :id).
+
+Now hit your MODELs/new or MODELs/:id/edit (like /posts/new or /posts/1/edit) and try adding an enclosure! When you upload your files 
+they are saved/transferred to the rygsaek of your choice (ie stored on disk, persisted to some database, uploaded to some cloud service, et al)
+and the file reference, is saved to a tuple/record in a table/dataset labeled **rygsaek\_items** which holds a reference to the rygsaek in question, 
+a file reference, and a details field. And a tuple/record in a table/dataset labeled **rygsaek\_item\_links** is created
+with a reference to the **rygsaek\_items** tuple/record and a reference to the model, id, and field (in our example here that 
+would be the posts/1!)
 
 At upload time you get to make a choice what details to add to the record. Details are serialized and stored in the details 
 field. If there is no association/reference to any other instance, you're done. Otherwise another tuple is created in a 
@@ -94,10 +117,11 @@ briefly. It contains Rygsaek defaults which you probably would like to adjust to
 
 Done that? Then go ahead and generate 'rygsaek' with your first model (that requires 'a rygsaek') as scope
 
-		$ rails generate rygsaek MODEL
+		$ rails generate rygsaek MODEL FIELD
 
-**Rygsaek** will create view files, view\_helpers, and controllers for rygsaeks, and rygsaek\_items, and a partial for 
-rygsaek\_item\_links, add migrations to your project, 
+On the first model on which you run the generator, **Rygsaek** will add migrations to your project, 
+and controllers for rygsaeks, and rygsaek\_items, and on every model, **Rygsaek** will create view files, view\_helpers, and a partial for 
+rygsaek\_item\_links
 
 
 
@@ -152,6 +176,37 @@ end
 
 With the model configurations out of the way you're well on your way to start attaching uploads to your
 models.
+
+####Multiple references on a model
+
+You can get away with referencing any number of enclosures on a model - like
+
+* some\_models/:id/photo
+* some\_models/:id/documents
+* some\_models/:id/bills\_of\_material
+
+The default - enclosures - will (unless you change the configuration) always be available - like
+
+* some\_models/:id/enclosures
+
+and contain all enclosures on the instance.
+
+You describe this to **Rygsaek** in this way:
+
+```ruby
+class SomeModel < ActiveRecord::Base
+  carries_rygsaek	{ 
+		:photo, options:{},
+		:documents, options:{},
+		:bills_of_material, options:{},
+	}
+  ...
+end
+```
+
+
+
+
 
 ### View configuration
 
