@@ -54,15 +54,19 @@ The above statement could be written like
 
 		carries_rygsaek
 
+(which is done automagically using the ```rails g rygsaek some_model``` command).
+
 Notice too, how the **field name** symbol is plural - identifying that you expect more photos to be uploadable/viewable - 
-which will be a hint to the view\_helper to accept/display more photos 'out of the box'.
+which will be a hint to the view\_helper to accept/display more photos 'out of the box'. You could easily add another reference
+to a singular enclosure, using ```rails g rygsaek some_model lease``` (where _lease_ would identify the enclosure reference - 
+an attribute on the model referring to a singular enclosure).
 
 Add a reference to the enclosure on the views/MODELs/\_form.html.haml - using either the view_photo or view\_gallery helper - both 
 accepts a form object which makes it an easy add :)
 
 If you - like in the example above - labeled the field reference ```:enclosures``` you'd allow more documents to be uploaded
 even if you add the ```view_photo``` helper, but when display enclosures, the view\_photo helper will only display the
-first enclosure found (the one with the smallest :id).
+last enclosure added (the one with the largest :id).
 
 Now hit your MODELs/new or MODELs/:id/edit (like /posts/new or /posts/1/edit) and try adding an enclosure! When you upload your files 
 they are saved/transferred to the rygsaek of your choice (ie stored on disk, persisted to some database, uploaded to some cloud service, et al)
@@ -204,7 +208,30 @@ class SomeModel < ActiveRecord::Base
 end
 ```
 
+####Singular vs plural references
 
+You might wonder what the difference between ```some_instance.enclosures``` and ```some_instance.enclosure``` really boils
+down to!?
+
+The plural form (given that the field reference is _photos_) does:
+
+		enclosures.where(field: 'photo')
+
+builds this kind of SQL: 
+
+		select * from rygsaek_items 
+		inner join rygsaek_item_links on rygsaek_items.id = rygsaek_item_links.ryg_saek_item_id
+		inner join some_model on some_model.id = rygsaek_item_links.model_id and rygsaek_item_links.model_type == 'SomeModel'
+
+The singular form (given that the field reference is _photo_) does:
+
+		enclosures.where(field: 'photo').last
+		
+This indicates that any number of photos might be uploaded even if the reference is singular - but that ultimately comes
+down to the view\_helper! If you insert a reference to ```view\_gallery :photo``` (or you insert ```carries_rygsaek :photos```
+on the model), you view effectively imply that more photos may be uploaded. 
+
+To battle this - the singular always looks for any number of enclosures of the field in question - and then returns the last found.
 
 
 
