@@ -1,5 +1,5 @@
 [![Build Status](https://api.travis-ci.org/wdiechmann/rygsaek.png?branch=master)](http://travis-ci.org/wdiechmann/rygsaek)
-[![Code Climate](https://codeclimate.com/github/wdiechmann/rygsaek.png)](https://codeclimate.com/github/wdiechmann/rygsaek)
+[![Coverage Status](https://coveralls.io/repos/wdiechmann/rygsaek/badge.png)](https://coveralls.io/r/wdiechmann/rygsaek)
 
 ## Rygsaek
 
