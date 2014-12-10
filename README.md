@@ -2,7 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/wdiechmann/rygsaek/badge.png)](https://coveralls.io/r/wdiechmann/rygsaek)
 
 ## Rygsaek
-[!!!current state!!!](current_state)
+<a href="#current_state">!!!current state!!!</a>
 Give your models a carry-on to hold all the enclosures users may upload.
 
 **Rygsaek** manages the enclosures to models, like images, documents and other files
