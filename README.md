@@ -2,7 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/wdiechmann/rygsaek/badge.png)](https://coveralls.io/r/wdiechmann/rygsaek)
 
 ## Rygsaek
-
+[!!!current state!!!](current_state)
 Give your models a carry-on to hold all the enclosures users may upload.
 
 **Rygsaek** manages the enclosures to models, like images, documents and other files
@@ -304,3 +304,8 @@ and it's API as it adds RESTful  URL's for retrieving and storing attachments:
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+###Current State of the Gem
+<a name="current_state"></a> See the Changes document for details.
+
+**Rygsaek** is still only in very early alpha -
