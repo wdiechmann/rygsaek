@@ -9,12 +9,8 @@ module ActiveRecord
       include Rygsaek::Generators::OrmHelpers
       source_root File.expand_path("../templates", __FILE__)
 
-      def copy_devise_migration
-        if (behavior == :invoke && model_exists?) || (behavior == :revoke && migration_exists?(table_name))
-          migration_template "migration_existing.rb", "db/migrate/add_rygsaek_to_#{table_name}.rb"
-        else
-          migration_template "migration.rb", "db/migrate/rygsaek_create_#{table_name}.rb"
-        end
+      def copy_rygsaek_migration
+        migration_template "migration.rb", "db/migrate/create_rygsaek_tables.rb"
       end
 
       def generate_model
@@ -22,60 +18,59 @@ module ActiveRecord
       end
 
       def inject_rygsaek_content
-        content = model_contents
-
-        class_path = if namespaced?
-          class_name.to_s.split("::")
-        else
-          [class_name]
-        end
-
-        indent_depth = class_path.size - 1
-        content = content.split("\n").map { |line| "  " * indent_depth + line } .join("\n") << "\n"
-
-        inject_into_class(model_path, class_path.last, content) if model_exists?
+        # content = model_contents
+        #
+        # class_path = if namespaced?
+        #   class_name.to_s.split("::")
+        # else
+        #   [class_name]
+        # end
+        #
+        # indent_depth = class_path.size - 1
+        # content = content.split("\n").map { |line| "  " * indent_depth + line } .join("\n") << "\n"
+        #
+        # inject_into_class(model_path, class_path.last, content) if model_exists?
       end
 
       def migration_data
 <<RUBY
-      ## Database authenticatable
-      t.string :email,              null: false, default: ""
-      t.string :encrypted_password, null: false, default: ""
 
-      ## Recoverable
-      t.string   :reset_password_token
-      t.datetime :reset_password_sent_at
+  create_table(:#{rygsaek_prefix.pluralize}) do |t|
+    t.string        :name, default: ''                                                              # how to identify the rygsaek (persistence provider)
+    t.string        :provider,  default: 'Local'                                                    # name of the provider - local has special meaning
+    t.text          :settings,  default: '{ local_root: "", endpoint: "#{Rails.root.join 'tmp'}"}'  # FIXME! you will loose uploads between deploys!!!!
+    t.string        :file_permissions,  default: '0666'
+    t.string        :directory_permissions, default: '0777'
+    t.integer       :lock_version, default: 0                                                       # support Rails optimistic locking out-of-the-box
+    t.timestamps
+  end
 
-      ## Rememberable
-      t.datetime :remember_created_at
+  create_table(:#{rygsaek_prefix}_items) do |t|
+    t.references    :#{rygsaek_prefix}, index: true
+    t.string        :file_name, default: ''                                                         # how to identify the rygsaek (persistence provider)
+    t.text          :meta_data, default: ''                                                         # use this field to add any kind of serialized data on a file - location, filters used, author, etc.
+    t.integer       :lock_version, default: 0                                                       # support Rails optimistic locking out-of-the-box
+    t.timestamps
+  end
 
-      ## Trackable
-      t.integer  :sign_in_count, default: 0, null: false
-      t.datetime :current_sign_in_at
-      t.datetime :last_sign_in_at
-      t.#{ip_column} :current_sign_in_ip
-      t.#{ip_column} :last_sign_in_ip
+  create_table(:#{rygsaek_prefix}_item_links) do |t|
+    t.references    :#{rygsaek_prefix}_item, index: true
+    t.references    :#{rygsaek_prefix}_item_link, polymorphic: true                                           # model and id - eg.: Post and 23487
+    t.string        :field_name                                                                     # attribute - eg.: picture
+    t.integer       :file_version, default: 1                                                       # you may store multiple versions of that file
+    t.integer       :lock_version, default: 0                                                       # support Rails optimistic locking out-of-the-box
+    t.timestamps
+  end
 
-      ## Confirmable
-      # t.string   :confirmation_token
-      # t.datetime :confirmed_at
-      # t.datetime :confirmation_sent_at
-      # t.string   :unconfirmed_email # Only if using reconfirmable
+  add_index :#{rygsaek_prefix.pluralize},            :provider
+  add_index :#{rygsaek_prefix}_items,       :file_name
+  add_index :#{rygsaek_prefix}_item_links,  [:#{rygsaek_prefix}_item_link_id, :#{rygsaek_prefix}_item_link_type, :field_name, :file_version]
 
-      ## Lockable
-      # t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
-      # t.string   :unlock_token # Only if unlock strategy is :email or :both
-      # t.datetime :locked_at
 RUBY
       end
 
-      def ip_column
-        # Padded with spaces so it aligns nicely with the rest of the columns.
-        "%-8s" % (inet? ? "inet" : "string")
-      end
-
-      def inet?
-        rails4? && postgresql?
+      def rygsaek_prefix
+        "rygsaek"
       end
 
       def rails4?

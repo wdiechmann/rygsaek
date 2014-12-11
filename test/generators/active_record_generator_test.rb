@@ -10,39 +10,32 @@ if RYGSAEK_ORM == :active_record
 
     test "all files are properly created with rails31 migration syntax" do
       run_generator %w(monster)
-      assert_migration "db/migrate/rygsaek_create_monsters.rb", /def change/
+      assert_migration "db/migrate/create_rygsaek_tables.rb", /def change/
     end
 
-    test "all files for namespaced model are properly created" do
-      run_generator %w(admin/monster)
-      assert_migration "db/migrate/rygsaek_create_admin_monsters.rb", /def change/
-    end
+    # test "all files for namespaced model are properly created" do
+    #   run_generator %w(admin/monster)
+    #   assert_migration "db/migrate/rygsaek_create_admin_monsters.rb", /def change/
+    # end
 
     test "update model migration when model exists" do
       run_generator %w(monster)
       assert_file "app/models/monster.rb"
       run_generator %w(monster)
-      assert_migration "db/migrate/add_rygsaek_to_monsters.rb"
+      assert_migration "db/migrate/create_rygsaek_tables.rb"
     end
 
     test "all files are properly deleted" do
       run_generator %w(monster)
       run_generator %w(monster)
-      assert_migration "db/migrate/rygsaek_create_monsters.rb"
-      assert_migration "db/migrate/add_rygsaek_to_monsters.rb"
+      assert_migration "db/migrate/create_rygsaek_tables.rb"
       run_generator %w(monster), behavior: :revoke
-      assert_no_migration "db/migrate/add_rygsaek_to_monsters.rb"
-      assert_migration "db/migrate/rygsaek_create_monsters.rb"
+      assert_no_migration "db/migrate/create_rygsaek_tables.rb"
       run_generator %w(monster), behavior: :revoke
       assert_no_file "app/models/monster.rb"
-      assert_no_migration "db/migrate/rygsaek_create_monsters.rb"
+      assert_no_migration "db/migrate/create_rygsaek_tables.rb"
     end
 
-    test "use string column type for ip addresses" do
-      run_generator %w(monster)
-      assert_migration "db/migrate/rygsaek_create_monsters.rb", /t.string   :current_sign_in_ip/
-      assert_migration "db/migrate/rygsaek_create_monsters.rb", /t.string   :last_sign_in_ip/
-    end
   end
 
   module RailsEngine
@@ -73,7 +66,7 @@ if RYGSAEK_ORM == :active_record
       simulate_inside_engine(RailsEngine::Engine, RailsEngine) do
         run_generator ["monster"]
 
-        assert_file "app/models/rails_engine/monster.rb", /rygsaek/
+        assert_file "app/models/rails_engine/monster.rb", /Monster/
         assert_file "app/models/rails_engine/monster.rb" do |content|
           assert_no_match /attr_accessible :email/, content
         end
@@ -86,10 +79,7 @@ if RYGSAEK_ORM == :active_record
       simulate_inside_engine(RailsEngine::Engine, RailsEngine) do
         run_generator ["monster"]
 
-        assert_file "app/models/rails_engine/monster.rb", /rygsaek/
-        assert_file "app/models/rails_engine/monster.rb" do |content|
-          assert_match /attr_accessible :email/, content
-        end
+        assert_file "app/models/rails_engine/monster.rb", /Monster/
       end
     end
 
@@ -99,7 +89,7 @@ if RYGSAEK_ORM == :active_record
       simulate_inside_engine(RailsEngine::Engine, RailsEngine) do
         run_generator ["monster"]
 
-        assert_file "app/models/rails_engine/monster.rb", /rygsaek/
+        assert_file "app/models/rails_engine/monster.rb", /Monster/
         assert_file "app/models/rails_engine/monster.rb" do |content|
           assert_no_match /attr_accessible :email/, content
         end

@@ -19,6 +19,7 @@ if any, a reference to any https://github.com/wdiechmann/rygsaek/issues promptin
 * started work on the rygsaek generator [wdiechmann][]
 * basic rygsaek functionality working (devise raw 1:1) [ephillips][]
 * added Coveralls.io code coverage climate [wdiechmann][]
+* continue work on rygsaek generator  [ephillips][]
 
 ----
 ##### 0.0.2

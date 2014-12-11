@@ -2,7 +2,9 @@
 [![Coverage Status](https://coveralls.io/repos/wdiechmann/rygsaek/badge.png)](https://coveralls.io/r/wdiechmann/rygsaek)
 
 ## Rygsaek
-<a href="#current_state">!!!current state!!!</a>
+
+<span style="color:red">Read about the <a href="#current_state">current state</a> of the <strong>Rygsaek</strong> gem!</span>
+
 Give your models a carry-on to hold all the enclosures users may upload.
 
 **Rygsaek** manages the enclosures to models, like images, documents and other files
@@ -18,7 +20,7 @@ product without having to copy it (so when the bill of materials change - both p
 Easy was it not?
 
 That first product - remember that one? Well, turns out it has reached it's EOL (End Of Life) so
-you go delete it. Deleting it will break the connection to the shared BOM spreadsheet right? No!
+you go on and delete it. Deleting it will break the connection to the shared BOM spreadsheet right? No!
 
 The BOM is safe with **Rygsaek** and only the link between the now defunct product and the BOM is gone.
 
@@ -105,12 +107,13 @@ all the heavy-lifting.
 
 ###Usage
 
-### Initial setup
-
-You most probably will start by setting up **Rygsaek**. In order for **Rygsaek** to function it has three tables
+You will start by installing **Rygsaek**. Then in order for **Rygsaek** to function it has three tables
 that it will create in your database - by default they are labeled rygsaek, rygsaek\_items, and rygsaek\_item\_links, but 
-you are free to set your own prefix name them otherwise!
+you are free to set your own prefix name them otherwise! Finally for you to have replies, **Rygsaek** adds routes.
 
+Further down the road you may configure **Rygsaek** to your hearts contend.
+
+####Install
 Getting a firm footing - start by using the generator for this:
 
     $ rails generate rygsaek:install
@@ -119,36 +122,26 @@ Getting a firm footing - start by using the generator for this:
 folder and after running the install generator, you really should browse the config/initializers/rygsaek.rb 
 briefly. It contains Rygsaek defaults which you probably would like to adjust to your environment.
 
-Done that? Then go ahead and generate 'rygsaek' with your first model (that requires 'a rygsaek') as scope
+####Ornament your first model
+Done the install? Then go ahead and generate 'rygsaek' with your first model (that you'd like to have 'a rygsaek') 
 
 		$ rails generate rygsaek MODEL FIELD
 
 On the first model on which you run the generator, **Rygsaek** will add migrations to your project, 
 and controllers for rygsaeks, and rygsaek\_items, and on every model, **Rygsaek** will create view files, view\_helpers, and a partial for 
-rygsaek\_item\_links
+rygsaek\_item\_links. This translates into
 
-
-
-
-
-but you get to decide what parts you'd like to erect yourself,
-
-    $ rails generate rygsaek:setup
+		$ rails generate rygsaek post pictures
 		
-			--prefix=rygsaek (rygsaek, rygsaek_items, and rygsaek_item_links)
-			--skip_views 
-			--skip_helpers 
-			--skip_controllers 
-			--skip_migrations 
-			--skip_initializer
-			
-If you skip, say the views, you will be able to customize the views later on by running this command
+which will setup the following routes:
 
-		$ rails g rygsaek:views
-		
-which will copy all **Rygsaek** views to views/rygsaek/ folders. Likewise for helpers, controllers, and migrations
+		resources :posts do
+			resources enclosures
+			resources pictures
+		end
 
-
+Notice! Namespacing rygsaeks are not supported as this would lead to more sets of tables being setup - and that
+may cause some serious confusion! So your /admin/posts/:id/enclosures live with /posts/:id/enclosures!
 
 ### Model configuration
 
