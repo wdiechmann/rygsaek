@@ -18,18 +18,18 @@ module ActiveRecord
       end
 
       def inject_rygsaek_content
-        # content = model_contents
-        #
-        # class_path = if namespaced?
-        #   class_name.to_s.split("::")
-        # else
-        #   [class_name]
-        # end
-        #
-        # indent_depth = class_path.size - 1
-        # content = content.split("\n").map { |line| "  " * indent_depth + line } .join("\n") << "\n"
-        #
-        # inject_into_class(model_path, class_path.last, content) if model_exists?
+        content = model_contents
+
+        class_path = if namespaced?
+          class_name.to_s.split("::")
+        else
+          [class_name]
+        end
+
+        indent_depth = class_path.size - 1
+        content = content.split("\n").map { |line| "  " * indent_depth + line } .join("\n") << "\n"
+
+        inject_into_class(model_path, class_path.last, content) if model_exists?
       end
 
       def migration_data
@@ -64,7 +64,7 @@ module ActiveRecord
 
   add_index :#{rygsaek_prefix.pluralize},            :provider
   add_index :#{rygsaek_prefix}_items,       :file_name
-  add_index :#{rygsaek_prefix}_item_links,  [:#{rygsaek_prefix}_item_link_id, :#{rygsaek_prefix}_item_link_type, :field_name, :file_version]
+  add_index :#{rygsaek_prefix}_item_links,  [:#{rygsaek_prefix}_item_link_id, :#{rygsaek_prefix}_item_link_type, :field_name, :file_version], name: :combined_rygsaek_index
 
 RUBY
       end
