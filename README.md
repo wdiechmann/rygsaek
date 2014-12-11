@@ -103,18 +103,18 @@ Or install it yourself as:
 ###Dependencies
 
 **Rygsaek** relies heavily on [CarrierWave](https://github.com/carrierwaveuploader/carrierwave) which does 
-all the heavy-lifting. 
+all the heavy-lifting, and [Fog](http://fog.io) for all the cloud storage part of the game. 
 
 ###Usage
 
 You will start by installing **Rygsaek**. Then in order for **Rygsaek** to function it has three tables
 that it will create in your database - by default they are labeled rygsaek, rygsaek\_items, and rygsaek\_item\_links, but 
-you are free to set your own prefix name them otherwise! Finally for you to have replies, **Rygsaek** adds routes.
+you are free to name them otherwise! Finally for you to have replies, **Rygsaek** adds routes.
 
 Further down the road you may configure **Rygsaek** to your hearts contend.
 
 ####Install
-Getting a firm footing - start by using the generator for this:
+Getting a firm footing - start by installing it, using the generator like this:
 
     $ rails generate rygsaek:install
 		
@@ -123,13 +123,16 @@ folder and after running the install generator, you really should browse the con
 briefly. It contains Rygsaek defaults which you probably would like to adjust to your environment.
 
 ####Ornament your first model
-Done the install? Then go ahead and generate 'rygsaek' with your first model (that you'd like to have 'a rygsaek') 
+Done the install? Then go ahead and generate 'rygsaek' with your first model (that you'd like to 'carry a rygsaek') 
 
-		$ rails generate rygsaek MODEL FIELD
+		$ rails generate rygsaek MODEL [FIELD]
 
 On the first model on which you run the generator, **Rygsaek** will add migrations to your project, 
-and controllers for rygsaeks, and rygsaek\_items, and on every model, **Rygsaek** will create view files, view\_helpers, and a partial for 
-rygsaek\_item\_links. This translates into
+and controllers for rygsaeks, and rygsaek\_items, and on every model, **Rygsaek** will create view files, 
+view\_helpers, and a partial for rygsaek\_item\_links. If you do not supply a FIELD/attribute name, the model
+will have an attribute named :enclosures.
+
+This all translates into
 
 		$ rails generate rygsaek post pictures
 		
@@ -142,6 +145,21 @@ which will setup the following routes:
 
 Notice! Namespacing rygsaeks are not supported as this would lead to more sets of tables being setup - and that
 may cause some serious confusion! So your /admin/posts/:id/enclosures live with /posts/:id/enclosures!
+
+Do it again, with another attribute - say selfie
+
+		$ rails g rygsaek post selfie
+		
+and watch how the routes now looks like:
+
+		resources :posts do
+			resources enclosures
+			resources pictures
+			resource selfie
+		end
+
+Notice! You supplied an attribute 'in singular' hence a singular ressource! 
+
 
 ### Model configuration
 
