@@ -290,9 +290,9 @@ module Rygsaek
   #   end
   # end
   #
-  # def self.available_router_name
-  #   router_name || :main_app
-  # end
+  def self.available_router_name
+    router_name || :main_app
+  end
   #
   # def self.omniauth_providers
   #   omniauth_configs.keys
@@ -417,11 +417,11 @@ module Rygsaek
   #   end
   # end
   #
-  # # Regenerates url helpers considering Devise.mapping
-  # def self.regenerate_helpers!
-  #   Devise::Controllers::UrlHelpers.remove_helpers!
-  #   Devise::Controllers::UrlHelpers.generate_helpers!
-  # end
+  # Regenerates url helpers considering Devise.mapping
+  def self.regenerate_helpers!
+    Rygsaek::Controllers::UrlHelpers.remove_helpers!
+    Rygsaek::Controllers::UrlHelpers.generate_helpers!
+  end
   #
   # # A method used internally to setup warden manager from the Rails initialize
   # # block.
